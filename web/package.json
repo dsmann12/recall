@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "playwright test"
+    "test": "playwright test",
+    "docker:build": "docker build -t ${TAG:-recall-web} .",
+    "docker:run": "docker run -d -p ${PORT:-3000}:80 -e DOMAIN=${DOMAIN:-localhost} --name ${NAME:-recall-web} --rm ${TAG:-recall-web}"
   },
   "dependencies": {
     "react": "^19.1.1",
