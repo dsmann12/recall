@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  recall-api:
+    build: ./api
+    container_name: recall-api
+    ports:
+      - "8002:8000"
+    restart: unless-stopped
+
+  recall-web:
+    build: ./web
+    container_name: recall-web
+    ports:
+      - "3000:80"
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+    restart: unless-stopped
+    depends_on:
+      - recall-api
