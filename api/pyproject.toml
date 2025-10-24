@@ -19,3 +19,51 @@ recall = "recall:main"
 [build-system]
 requires = ["uv_build>=0.9.4,<0.10.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.2",
+]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors (PEP 8)
+    "W",   # pycodestyle warnings (PEP 8)
+    "F",   # Pyflakes (undefined names, unused imports, etc.)
+    "I",   # isort (import sorting)
+    "N",   # pep8-naming (naming conventions)
+    "D",   # pydocstyle (docstring conventions)
+    "UP",  # pyupgrade (modernize Python syntax)
+    "B",   # flake8-bugbear (likely bugs and design problems)
+    "C4",  # flake8-comprehensions (better list/dict comprehensions)
+    "SIM", # flake8-simplify (simplification suggestions)
+    "RUF", # Ruff-specific rules
+]
+# Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
+# overlap with the use of a formatter, like Black, but we can override this behavior by
+# explicitly adding the rule.
+# extend-select = [
+#     "E501", # line-too-long
+#     "D", # pydcocstyle - docstring conventions
+# ]
+ignore = [
+    "D203",  # one-blank-line-before-class (conflicts with D211)
+    "D213",  # multi-line-summary-second-line (conflicts with D212)
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.extend-per-file-ignores]
+# Don't require docstrings in tests
+"tests/**/*.py" = [
+    "D",        # pydocstyle - docstring conventions
+    "S101"      # assert used (security issue in production code)
+]
+
+[tool.ruff.lint.mccabe]
+# Max complexity for functions (default: 10)
+max-complexity = 10
