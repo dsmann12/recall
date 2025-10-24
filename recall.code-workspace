@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "name": "recall-root",
+      "path": ".",
+    },
+    {
+      "name": "recall-api",
+      "path": "./api",
+    },
+    {
+      "name": "recall-web",
+      "path": "./web"
+    },
+  ],
+  "settings": {
+     // Python settings - enable globally but restrict to API folder
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.cwd": "${workspaceFolder:recall-api}",
+    "python.testing.pytestArgs": [
+      "tests"
+    ],
+    "python.defaultInterpreterPath": "${workspaceFolder:recall-api}/.venv/bin/python",
+
+    // Playwright settings
+    "playwright.reuseBrowser": false,
+    "playwright.showTrace": false,
+    
+    // File associations
+    "files.associations": {
+      "*.spec.ts": "typescript",
+      "*.test.ts": "typescript"
+    }
+  }
+}
