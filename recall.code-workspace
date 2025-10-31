@@ -22,6 +22,7 @@
       "tests"
     ],
     "python.defaultInterpreterPath": "${workspaceFolder:recall-api}/.venv/bin/python",
+    "python.terminal.activateEnvInCurrentTerminal": true,
 
     // Playwright settings
     "playwright.reuseBrowser": false,
