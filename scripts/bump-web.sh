@@ -3,7 +3,7 @@
 set -e
 
 if [ -z "$1" ]; then
-  echo "Usage: ./scripts/bump-api.sh <patch|minor|major>"
+  echo "Usage: ./scripts/bump-web.sh <patch|minor|major>"
   exit 1
 fi
 
