@@ -235,7 +235,6 @@ jobs:
     strategy:
       matrix:
         service: [api, web]
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -245,6 +244,20 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ matrix.service }}" == "api" ]; then
+            cd api
+            # Install uv if not available
+            pip install uv
+            VERSION=$(uv version --short)
+          else
+            cd web
+            VERSION=$(npm pkg get version | tr -d \")
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Pull build image
         run: |
@@ -253,7 +266,12 @@ jobs:
       - name: Tag and push production tags
         run: |
           IMAGE=${{ matrix.service == 'api' && env.API_IMAGE || env.WEB_IMAGE }}
+          VERSION=${{ steps.version.outputs.version }}
+
+          # Tag with version and latest
           docker tag ${IMAGE}:sha-${GITHUB_SHA::7} ${IMAGE}:latest
-          docker tag ${IMAGE}:sha-${GITHUB_SHA::7} ${IMAGE}:0.1.0
+          docker tag ${IMAGE}:sha-${GITHUB_SHA::7} ${IMAGE}:$VERSION
+
+          # Push both tages
           docker push ${IMAGE}:latest
-          docker push ${IMAGE}:0.1.0
+          docker push ${IMAGE}:$VERSION
